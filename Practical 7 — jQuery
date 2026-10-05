@@ -1,6 +1,3 @@
-Practical 7 — jQuery
-Practical 7 is jQuery Basics. Unlike Practicals 1–6, you do not need mongod, mongo, Python, Java, or XAMPP.
-According to your journal, you create HTML files containing jQuery code and open them in a browser. The journal uses jquery-3.6.1.min.js.     BDNS Journal
 Step 1 — Create the Practical 7 folder
 Create a folder anywhere, for example:
 BDNS
