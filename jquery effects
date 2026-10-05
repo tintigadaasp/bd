@@ -1,0 +1,206 @@
+Step 1 — Create Practical 9 folder
+Create:
+BDNS
+└── Practical9
+
+Keep:
+Practical9
+│
+├── jquery-3.3.1.min.js
+├── q1.html
+├── q2.html
+└── q3.html
+
+The journal uses jquery-3.3.1.min.js in Practical 9.     BDNS Journal
+Q1 — jQuery Effect Method with Callback Function
+The journal asks to create a jQuery effect method using a callback function. It uses hide("slow", function(){...}).     BDNS Journal
+Step 1 — Create q1.html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.3.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+
+            $("button").click(function(){
+
+                $("p").hide("slow", function(){
+
+                    alert("The paragraph is now hidden");
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p>Romal:239720</p>
+    <p>Welcome to MCC</p>
+
+    <button>Click!</button>
+
+</body>
+
+</html>
+
+Step 2 — Open q1.html
+Open it in Chrome.
+Before clicking
+Romal:239720
+Welcome to MCC
+
+[Click!]
+
+Step 3 — Click Click!
+The paragraphs slowly disappear.
+After they disappear, an alert appears:
+The paragraph is now hidden
+
+Output
+The journal shows the same callback alert after the paragraph is hidden.     BDNS Journal
+Q2 — Get and Set Text Content
+The journal uses .text() to get and set the text of an element.     BDNS Journal
+Step 1 — Create q2.html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+
+            $("#b1").click(function(){
+
+                var str = $("p").text();
+
+                alert(str);
+
+            });
+
+            $("#b2").click(function(){
+
+                $("p").text("Hello World");
+
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p>Romal Shah:239720</p>
+    <p>MongoDB</p>
+
+    <button id="b1">Get</button>
+    <button id="b2">Set</button>
+
+</body>
+
+</html>
+
+Step 2 — Open q2.html
+Initially:
+Romal Shah:239720
+MongoDB
+
+[Get] [Set]
+
+Step 3 — Click Get
+An alert displays the current text:
+Romal Shah:239720 MongoDB
+
+Step 4 — Click Set
+The paragraph text changes to:
+Hello World
+
+Output
+The journal demonstrates the same Get → alert current text and Set → change text to Hello World behavior.     BDNS Journal
+Q3 — Get and Set HTML Content
+The journal uses .html() to get and set the HTML content of an element.     BDNS Journal
+Step 1 — Create q3.html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+
+            $("#b1").click(function(){
+
+                var str = $("p").html();
+
+                alert(str);
+
+            });
+
+            $("#b2").click(function(){
+
+                $("p").html("<b>Hello World</b>");
+
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p><b>Romal Shah:</b>239720</p>
+    <p>MongoDB</p>
+
+    <button id="b1">Get</button>
+    <button id="b2">Set</button>
+
+</body>
+
+</html>
+
+Step 2 — Open q3.html
+Initially:
+Romal Shah:239720
+MongoDB
+
+[Get] [Set]
+
+Step 3 — Click Get
+An alert displays the HTML content, including the <b> tag.
+For example:
+<b>Romal Shah:</b>239720
+
+Step 4 — Click Set
+The content changes to:
+Hello World
+
+and Hello World appears bold because the code uses:
+"<b>Hello World</b>"
+
+Output
+This follows the journal's .html() get/set example.
