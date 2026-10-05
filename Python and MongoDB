@@ -1,0 +1,291 @@
+According to your BDNS Journal, Practical 6 uses Python + PyMongo + MongoDB. It contains four operations:
+1. Insert
+2. Update
+3. Retrieve
+4. Delete
+The journal connects Python to MongoDB using MongoClient('localhost',27017) and uses the database TYITDB239720 and collection MyCol.     BDNS Journal
+We will follow the CMD-based method you use in college.
+Step 1 — Start MongoDB
+CMD 1
+Open Command Prompt:
+mongod
+
+Keep this CMD running.
+CMD 2
+Open another Command Prompt:
+mongo
+
+You should see:
+>
+
+Keep this open as well.
+Step 2 — Check Python
+Open a third CMD and type:
+python --version
+
+You should get something like:
+Python 3.x.x
+
+Then check pip:
+pip --version
+
+Step 3 — Install PyMongo
+In the same CMD:
+pip install pymongo
+
+Expected:
+Successfully installed pymongo ...
+
+If it says it is already installed, that's fine.
+Step 4 — Create a folder
+In CMD:
+mkdir "C:\MongoDB Practical 6"
+
+Then:
+cd "C:\MongoDB Practical 6"
+
+You should now be at:
+C:\MongoDB Practical 6>
+
+Part 1 — Insert
+Step 5 — Create insert.py
+Create a file:
+insert.py
+
+Put this code from the journal:
+
+from pymongo import MongoClient
+
+client = MongoClient('localhost',27017)
+
+db = client.TYITDB239720
+
+def insert():
+    try:
+        name1 = input("Enter the Name:")
+        age1 = input("Enter the Age:")
+        dept1 = input("Enter the Department:")
+        pin1 = input("Enter the Pin No:")
+
+        db.MyCol.insert_one({
+            "name":name1,
+            "age":age1,
+            "dept":dept1,
+            "pin":pin1
+        })
+
+        print("Inserted data successfully")
+
+    except Exception as e:
+        print(str(e))
+
+insert()
+
+This follows the journal's insert program.     BDNS Journal
+Step 6 — Run insert
+In CMD:
+python insert.py
+
+It will ask:
+Enter the Name:
+
+Enter:
+Romal
+
+Then:
+Enter the Age:
+
+Enter:
+19
+
+Then:
+Enter the Department:
+
+Enter:
+I.T.
+
+Then:
+Enter the Pin No:
+
+Enter:
+239720
+
+Expected output
+Enter the Name:Romal
+Enter the Age:19
+Enter the Department:I.T.
+Enter the Pin No:239720
+Inserted data successfully
+
+This matches the journal's demonstrated input/output.     BDNS Journal
+Step 7 — Verify in MongoDB
+Go to CMD 2, where mongo is running.
+use TYITDB239720
+
+Then:
+show collections
+
+Expected:
+MyCol
+
+Now:
+db.MyCol.find()
+
+Expected:
+{
+    "_id" : ObjectId("..."),
+    "name" : "Romal",
+    "age" : "19",
+    "dept" : "I.T.",
+    "pin" : "239720"
+}
+
+Part 2 — Update
+Step 8 — Create update.py
+Create:
+update.py
+
+Use:
+
+from pymongo import MongoClient
+
+client = MongoClient('localhost',27017)
+
+db = client.TYITDB239720
+
+def update():
+    try:
+        name1 = input("Enter the Name:")
+        age1 = input("Enter the Age to update:")
+
+        db.MyCol.update_one(
+            {"name":name1},
+            {"$set":{"age":age1}}
+        )
+
+        print("\nRecords updated successfully\n")
+
+    except Exception as e:
+        print(str(e))
+
+update()
+This follows the journal's update program.     BDNS Journal
+Step 9 — Run update
+python update.py
+
+Enter:
+Enter the Name:Romal
+
+Then:
+Enter the Age to update:20
+
+Expected output
+Enter the Name:Romal
+Enter the Age to update:20
+
+Records updated successfully
+
+The journal demonstrates the same change from age 19 to 20.     BDNS Journal
+Step 10 — Verify update
+In MongoDB CMD:
+db.MyCol.find()
+
+Expected:
+{
+    "name" : "Romal",
+    "age" : "20",
+    "dept" : "I.T.",
+    "pin" : "239720"
+}
+
+Part 3 — Retrieve
+Step 11 — Create retrieve.py
+Create:
+retrieve.py
+
+Use:
+
+from pymongo import MongoClient
+
+client = MongoClient('localhost',27017)
+
+db = client.TYITDB239720
+
+def read():
+    try:
+        Col = db.MyCol.find()
+
+        print("\nAll data from database TYITDB239720:")
+
+        for MyCol in Col:
+            print(MyCol)
+
+    except Exception as e:
+        print(str(e))
+
+read()
+
+This follows the journal's retrieve program.
+BDNS Journal
+
+Step 12 — Run retrieve
+python retrieve.py
+
+Expected output
+All data from database TYITDB239720:
+
+{'_id': ObjectId('...'),
+ 'name': 'Romal',
+ 'age': '20',
+ 'dept': 'I.T.',
+ 'pin': '239720'}
+
+The journal shows the retrieved document printed in the Python CMD.     BDNS Journal
+Part 4 — Delete
+Step 13 — Create delete.py
+Create:
+delete.py
+
+Use:
+
+from pymongo import MongoClient
+
+client = MongoClient('localhost',27017)
+
+db = client.TYITDB239720
+
+def delete():
+    try:
+        name1 = input("Enter the name:")
+
+        db.MyCol.delete_one({
+            "name":name1
+        })
+
+        print("\nData deleted successfully")
+
+    except Exception as e:
+        print(str(e))
+
+delete()
+
+This follows the journal's delete program.     BDNS Journal
+Step 14 — Run delete
+python delete.py
+
+Enter:
+Enter the name:Romal
+
+Expected output
+Enter the name:Romal
+
+Data deleted successfully
+
+The journal shows the same deletion flow.     BDNS Journal
+Step 15 — Verify deletion
+Go to MongoDB CMD:
+db.MyCol.find()
+
+Expected result
+No document should be returned.
+The journal also shows db.MyCol.find() after deletion with no remaining document.     
