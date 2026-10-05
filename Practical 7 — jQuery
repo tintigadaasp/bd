@@ -1,0 +1,527 @@
+Practical 7 — jQuery
+Practical 7 is jQuery Basics. Unlike Practicals 1–6, you do not need mongod, mongo, Python, Java, or XAMPP.
+According to your journal, you create HTML files containing jQuery code and open them in a browser. The journal uses jquery-3.6.1.min.js.     BDNS Journal
+Step 1 — Create the Practical 7 folder
+Create a folder anywhere, for example:
+BDNS
+└── Practical7
+
+Inside it, keep:
+Practical7
+│
+├── jquery-3.6.1.min.js
+├── q1.html
+├── q2.html
+├── q3.html
+├── q4.html
+├── q5.html
+├── q6.html
+├── q7.html
+├── q8.html
+└── q9.html
+
+Download/copy jquery-3.6.1.min.js into this folder because the journal's programs reference that local file.     BDNS Journal
+Then for every question:
+Right-click HTML file
+       ↓
+Open with Chrome
+       ↓
+Perform the action
+       ↓
+Check output
+
+Q1 — Check contents on button click
+The journal's first question uses a button click and document.write("Hello Romal").     BDNS Journal
+Step 1 — Create q1.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#btn").click(function () {
+                document.write("Hello Romal");
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <p>Romal: 239720</p>
+
+    <button id="btn">Click Me</button>
+
+</body>
+</html>
+
+Step 2 — Open q1.html
+Before clicking:
+Romal: 239720
+
+[Click Me]
+
+Click Click Me.
+Output
+Hello Romal
+
+This matches the journal's shown output.     BDNS Journal
+Q2 — Select elements by class, ID and element name
+The journal demonstrates:
+- .class1 → class selector
+- #id1 → ID selector
+- h2 → element selector.     BDNS Journal
+Create q2.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $(".class1").css("background", "lightblue");
+
+            $("#id1").css("background", "pink");
+
+            $("h2").css("background", "lightgreen");
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <p class="class1">Romal: 239720</p>
+
+    <p id="id1">Romal Shah</p>
+
+    <h2>Welcome Romal</h2>
+
+</body>
+</html>
+
+Output
+You will see:
+Romal: 239720       → light blue background
+
+Romal Shah          → pink background
+
+Welcome Romal       → light green background
+
+The journal shows the same three selectors and corresponding visual output.     BDNS Journal
+Q3 — click(), hover(), on(), trigger(), off()
+This is the longest question in Practical 7.
+The journal demonstrates the jQuery events:
+click()
+hover()
+on()
+trigger()
+off()
+
+    BDNS Journal
+Create q3.html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#b1").hover(function () {
+                document.write("Hello Romal");
+            });
+
+            $("p").on("click", function () {
+                $(this).css("background", "yellow");
+            });
+
+            $("#b2").click(function () {
+                $("p").off("click");
+            });
+
+            $("#b3").on(function () {
+                $("#t1").hide();
+            });
+
+            $("input").select(function () {
+                $("input").after("Text Marked!");
+            });
+
+            $("#b4").click(function () {
+                $("input").trigger("select");
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <button id="b1">Hover</button>
+    <br>
+
+    <p>Welcome to the Mulund College</p>
+    <br>
+
+    <p>Romal: 239720</p>
+    <br>
+
+    <button id="b2">Off</button>
+    <br>
+
+    <p id="t1">Hello Romal</p>
+    <br>
+
+    <button id="b3">On</button>
+    <br>
+
+    <input type="text" value="Romal 239720">
+    <br>
+
+    <button id="b4">Trigger</button>
+
+</body>
+</html>
+
+Output/actions
+- Hover over Hover → Hello Romal
+- Click a paragraph → yellow background
+- Click Off → paragraph click event is removed
+- Selecting the input text → Text Marked!
+- Clicking Trigger → triggers the select event
+The journal's screenshots show these interactions.     BDNS Journal
+Q4 — Animated Show/Hide
+The journal asks for a jQuery animated show/hide effect.     BDNS Journal
+Create q4.html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#b1").click(function () {
+                $("p").hide();
+            });
+
+            $("#b2").click(function () {
+                $("p").show();
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p>Romal Shah:239720</p>
+
+    <button id="b1">Hide</button>
+
+    <button id="b2">Show</button>
+
+</body>
+</html>
+
+Output
+Initially:
+Romal Shah:239720
+
+[Hide] [Show]
+
+Click Hide:
+[Hide] [Show]
+
+The paragraph disappears.
+Click Show:
+Romal Shah:239720
+
+[Hide] [Show]
+
+The paragraph appears again.
+Q5 — Simple Toggle Effect
+The journal uses .toggle() for this question.     BDNS Journal
+Create q5.html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("button").click(function () {
+                $("p").toggle();
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p>Romal Shah:239720</p>
+
+    <button>Toggle</button>
+
+</body>
+</html>
+
+Output
+Initially:
+Romal Shah:239720
+
+[Toggle]
+
+Click Toggle → paragraph disappears.
+Click Toggle again → paragraph appears.
+Q6 — Fade In and Fade Out
+The journal uses fadeOut(5000) and fadeIn(5000).     BDNS Journal
+Create q6.html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $(".c1").click(function () {
+                $("p").fadeOut(5000);
+            });
+
+            $(".c2").click(function () {
+                $("p").fadeIn(5000);
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p>Romal Shah:239720</p>
+
+    <button class="c1">Fade Out</button>
+
+    <button class="c2">Fade In</button>
+
+</body>
+</html>
+
+Output
+Romal Shah:239720
+
+[Fade Out] [Fade In]
+
+Click Fade Out → paragraph gradually disappears.
+Click Fade In → paragraph gradually appears.
+5000 means approximately 5 seconds.
+Q7 — Fade Toggle
+The journal uses fadeToggle(5000).     BDNS Journal
+Create q7.html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("button").click(function () {
+                $("p").fadeToggle(5000);
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p>Romal Shah:239720</p>
+
+    <button>Fade Toggles</button>
+
+</body>
+</html>
+
+Output
+Romal Shah:239720
+
+[Fade Toggles]
+
+Click once → fades out.
+Click again → fades in.
+Q8 — Slide Up and Slide Down
+The journal uses:
+slideUp(3000)
+slideDown(3000)
+
+    BDNS Journal
+Create q8.html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#b1").click(function () {
+                $("p").slideUp(3000);
+            });
+
+            $("#b2").click(function () {
+                $("p").slideDown(3000);
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p>Romal Shah:239720</p>
+
+    <button id="b1">Slide Up</button>
+
+    <button id="b2">Slide Down</button>
+
+</body>
+</html>
+
+Output
+Romal Shah:239720
+
+[Slide Up] [Slide Down]
+
+Click Slide Up → paragraph slides upward and disappears.
+Click Slide Down → paragraph slides downward and appears.
+Q9 — Slide Toggle
+The journal uses slideToggle(5000).     BDNS Journal
+Create q9.html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("button").click(function () {
+                $("p").slideToggle(5000);
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p>Romal Shah:239720</p>
+
+    <button>Slide Toggle</button>
+
+</body>
+</html>
+
+Output
+Romal Shah:239720
+
+[Slide Toggle]
+
+Click once → paragraph slides up.
+Click again → paragraph slides down.
+Q10 — Mouse Event
+The journal also includes a mouse-event program using mouseleave().     BDNS Journal
+Create q10.html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#p1").mouseleave(function () {
+
+                alert("Bye! You now leave p1");
+
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p id="p1">This is a paragraph</p>
+
+</body>
+
+</html>
+
+Output
+Initially:
+This is a paragraph
+
+Move your mouse over the paragraph and then move it outside.
+An alert appears:
+Bye! You now leave p1
