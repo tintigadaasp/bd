@@ -1,0 +1,267 @@
+Step 1: Start MongoDB using CMD
+CMD 1 — MongoDB Server
+Open Command Prompt and type:
+mongod
+
+
+Expected result: The MongoDB server starts, normally listening on port 27017.
+Keep this CMD window open.
+
+CMD 2 — MongoDB Shell
+Open another Command Prompt and type:
+mongo
+
+
+Expected result:
+MongoDB shell version ...
+connecting to: mongodb://127.0.0.1:27017/
+>
+
+
+If your installed version uses the newer MongoDB Shell, enter mongosh instead of mongo.
+
+Enter all the following MongoDB commands in CMD 2.
+
+Part A: Create and drop a database
+Step 2 — Display existing databases
+show dbs
+
+
+Sample output:
+admin    0.000GB
+config   0.000GB
+local    0.000GB
+
+
+Step 3 — Create/select a database
+use Romal
+
+
+Output:
+switched to db Romal
+
+
+The database is selected, but MongoDB does not persist it until you store data.
+Step 4 — Create a collection to save the database
+db.createCollection("Practical1")
+
+
+Output:
+{ "ok" : 1 }
+
+
+Step 5 — Display databases and collections
+show dbs
+show collections
+
+
+Expected collection output:
+Practical1
+
+
+Step 6 — Drop the database
+db.dropDatabase()
+
+
+Output:
+{ "ok" : 1 }
+
+
+
+Part B: Create, display and drop a collection
+Step 7 — Select the database again
+use Romal
+
+
+Step 8 — Create a collection
+db.createCollection("Practical1")
+
+
+Output:
+{ "ok" : 1 }
+
+
+Step 9 — Display collections
+show collections
+
+
+Output:
+Practical1
+
+
+Step 10 — Drop the collection
+db.Practical1.drop()
+
+
+Output:
+true
+
+
+
+
+
+
+
+Part C: Insert, query, update and delete a document
+Step 11 — Select the database
+use Romal
+
+
+Step 12 — Insert a document
+db.Doc.insertOne({Name:"Romal",Age:10})
+
+
+Output:
+{
+  "acknowledged": true,
+  "insertedId": ObjectId("...")
+}
+
+
+Step 13 — Display the document
+db.Doc.find()
+
+
+Expected output (your generated _id will differ):
+{
+  "_id": ObjectId("..."),
+  "Name": "Romal",
+  "Age": 10
+}
+
+
+Step 14 — Update the document
+db.Doc.updateOne(
+  {Name:"Romal"},
+  {$set:{Age:20}}
+)
+
+
+Output:
+{
+  "acknowledged": true,
+  "matchedCount": 1,
+  "modifiedCount": 1
+}
+
+
+Verify:
+db.Doc.find()
+
+
+Expected result:
+{
+  "_id": ObjectId("..."),
+  "Name": "Romal",
+  "Age": 20
+}
+
+
+Step 15 — Delete the document
+db.Doc.deleteOne({Name:"Romal"})
+
+
+Output:
+{
+  "acknowledged": true,
+  "deletedCount": 1
+}
+
+
+Verify:
+db.Doc.find()
+
+
+Output: No documents returned.
+
+Part D: Employee queries
+Your journal contains six Employee tasks, including inserting documents and filtering employees by city, salary and department.
+Step 16 — Create Employee records
+Use the following sample dataset, consistent with the journal's queries. The names and fields are based on the journal, with values organized here so you can execute every query in sequence.
+use Employee
+
+
+db.col.insertMany([
+  {Name:"Smita",Salary:100000,Dept:"IT",City:"Mumbai"},
+  {Name:"Romal",Salary:15000,Dept:"IT",City:"Thane"},
+  {Name:"Sujal",Salary:9000,Dept:"Tester",City:"Bandra"},
+  {Name:"Manav",Salary:30000,Dept:"Finance",City:"Kurla"},
+  {Name:"Hansa",Salary:20000,Dept:"Developer",City:"Pune"}
+])
+
+
+Output:
+{
+  "acknowledged": true,
+  "insertedIds": {
+    "0": ObjectId("..."),
+    "1": ObjectId("..."),
+    "2": ObjectId("..."),
+    "3": ObjectId("..."),
+    "4": ObjectId("...")
+  }
+}
+
+
+Step 17 — Display all Employee records
+db.col.find()
+
+
+Output: All five Employee documents, including their generated _id values.
+Step 18 — Display employees living in Mumbai
+db.col.find({City:"Mumbai"})
+
+
+Expected matching record:
+Smita | 100000 | IT | Mumbai
+
+
+Step 19 — Display employees living in Kurla with salary greater than 19000
+db.col.find({
+  City:"Kurla",
+  Salary:{$gt:19000}
+})
+
+
+Expected matching record:
+Manav | 30000 | Finance | Kurla
+
+
+Step 20 — Display employees whose salary is greater than or equal to 10000 but less than 20000
+db.col.find({
+  Salary:{$gte:10000,$lt:20000}
+})
+
+
+Expected matching record:
+Romal | 15000 | IT | Thane
+
+
+Step 21 — Display employees living in Thane or Mumbai with salary greater than 10000
+db.col.find({
+  $or:[
+    {City:"Thane"},
+    {City:"Mumbai"}
+  ],
+  Salary:{$gt:10000}
+})
+
+
+Expected matching records:
+Smita | 100000 | IT | Mumbai
+Romal | 15000  | IT | Thane
+
+
+Step 22 — Display employees whose salary is not equal to 10000 and whose department is Developer or Tester
+db.col.find({
+  Salary:{$ne:10000},
+  $or:[
+    {Dept:"Developer"},
+    {Dept:"Tester"}
+  ]
+})
+
+
+Expected matching records:
+Sujal | 9000  | Tester    | Bandra
+Hansa | 20000 | Developer | Pune
