@@ -1,0 +1,177 @@
+MongoDB Basics 2
+Practical 2 in your journal uses a collection of user documents and performs insert, update, add field, delete, count, and projection operations.     BDNS Journal
+We will use the same 2-CMD college setup.
+Step 1 — Start MongoDB Server
+CMD 1
+mongod
+
+Keep this window open.
+CMD 2
+mongo
+
+You should get:
+>
+
+Step 2 — Select/Create the database
+use Data
+
+Output:
+switched to db Data
+
+Step 3 — Insert the documents
+The journal uses documents with these fields:
+- Name
+- Age
+- Country
+- Gender
+Enter:
+db.col.insertMany([
+  {Name:"Romal",Age:20,Country:"India",Gender:"Female"},
+  {Name:"Raj",Age:12,Country:"Russia",Gender:"Male"},
+  {Name:"Rajiv",Age:25,Country:"USA",Gender:"Male"},
+  {Name:"Suja",Age:65,Country:"India",Gender:"Female"},
+  {Name:"Koyal",Age:30,Country:"USA",Gender:"Female"}
+])
+
+Output
+{
+  "acknowledged" : true,
+  "insertedIds" : {
+    "0" : ObjectId("..."),
+    "1" : ObjectId("..."),
+    "2" : ObjectId("..."),
+    "3" : ObjectId("..."),
+    "4" : ObjectId("...")
+  }
+}
+
+Your ObjectId values will be different.
+
+Step 4 — Display all documents
+db.col.find()
+
+Output
+You should see the five inserted documents:
+Romal   20   India   Female
+Raj     12   Russia  Male
+Rajiv   25   USA     Male
+Suja    65   India   Female
+Koyal   30   USA     Female
+
+Step 5 — Update country to UK for all female users
+Question: Update the country to UK for all female users.
+Run:
+db.col.updateMany(
+  {Gender:"Female"},
+  {$set:{Country:"UK"}}
+)
+
+Output
+{
+  "acknowledged" : true,
+  "matchedCount" : 3,
+  "modifiedCount" : 3
+}
+
+Check the result:
+db.col.find()
+
+Now the female users should have:
+Romal   20   UK   Female
+Suja    65   UK   Female
+Koyal   30   UK   Female
+
+The male users still have their original countries.
+Step 6 — Add a new Company field
+Question: Add the new field company to all documents.
+Run:
+db.col.updateMany(
+  {},
+  {$set:{Company:"Wipro"}}
+)
+
+Output
+{
+  "acknowledged" : true,
+  "matchedCount" : 5,
+  "modifiedCount" : 5
+}
+
+Now check:
+db.col.find()
+
+Each document should contain:
+Company: "Wipro"
+
+For example:
+{
+  Name: "Romal",
+  Age: 20,
+  Country: "UK",
+  Gender: "Female",
+  Company: "Wipro"
+}
+
+Step 7 — Delete all male users
+Question: Delete all documents where Gender = "M".
+Use:
+db.col.deleteMany({Gender:"Male"})
+
+Output
+{
+  "acknowledged" : true,
+  "deletedCount" : 2
+}
+
+Now verify:
+db.col.find()
+
+Only the female users should remain.
+Step 8 — Count female users in India or USA
+The journal asks:
+Find out a count of female users who stay in either India or USA.     BDNS Journal
+
+Important: In the journal's sequence, you have already changed all female users' countries to UK and deleted male users. Therefore, if you execute this question after Step 7, the result will be 0.
+To reproduce the journal's intended query, use the dataset before the female-country update.
+The query shown in the journal is essentially:
+db.col.find({
+  $or:[
+    {Country:"India"},
+    {Country:"USA"}
+  ],
+  Gender:"Female"
+}).count()
+
+Expected output with the original data
+3
+
+Because the original female users in India/USA are:
+Romal → India
+Suja  → India
+Koyal → USA
+
+Step 9 — Display first name and age of all female employees
+Again, this is intended to be performed on the original dataset.
+db.col.find(
+  {Gender:"Female"},
+  {Name:1,Age:1}
+)
+
+Output
+{
+  "_id" : ObjectId("..."),
+  "Name" : "Romal",
+  "Age" : 20
+}
+{
+  "_id" : ObjectId("..."),
+  "Name" : "Suja",
+  "Age" : 65
+}
+{
+  "_id" : ObjectId("..."),
+  "Name" : "Koyal",
+  "Age" : 30
+}
+
+The journal's screenshot shows the same type of projection using Name:1 and Age:1.     BDNS Journal
