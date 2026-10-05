@@ -1,0 +1,175 @@
+Practical 10 — JSON
+Practical 10 is JSON using JavaScript. According to your journal, it contains two main parts:
+1. Creating JSON
+2. Parsing JSON
+It is done using an HTML file + JavaScript, so you only need Chrome/browser. 
+Step 1 — Create Practical 10 folder
+Create:
+BDNS
+└── Practical10
+
+Inside:
+Practical10
+│
+├── creating.html
+└── parsing.html
+
+No MongoDB, XAMPP, Python or Java is required.
+Part 1 — Creating JSON
+The journal creates a JavaScript object containing:
+name = Romal
+age = 20
+dept = IT
+
+and then uses JSON.stringify() in three different ways.     BDNS Journal
+Step 2 — Create creating.html
+<html>
+
+<head>
+
+    <title>Creating JSON</title>
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+    var data = {
+        "name": "Romal",
+        "age": 20,
+        "dept": "IT"
+    };
+
+    document.writeln(JSON.stringify(data) + "<br>");
+
+    document.writeln(
+        JSON.stringify(data, ["name", "age", "dept"]) + "<br>"
+    );
+
+    document.writeln(
+        JSON.stringify(data, ["name", "age", "dept"], 5)
+    );
+
+</script>
+
+</body>
+
+</html>
+
+This follows the journal's Creating JSON program.     BDNS Journal
+Step 3 — Open creating.html
+Double-click:
+creating.html
+
+It will open in Chrome.
+Expected output
+You will see JSON similar to:
+{"name":"Romal","age":20,"dept":"IT"}
+
+{"name":"Romal","age":20,"dept":"IT"}
+
+{
+     "name": "Romal",
+     "age": 20,
+     "dept": "IT"
+}
+
+The third JSON.stringify() uses 5 as the spacing/indentation argument, so the JSON is displayed in a formatted way. The journal shows these three outputs.     BDNS Journal
+Part 2 — Parsing JSON
+The journal then creates JSON as a string and converts it into a JavaScript object using JSON.parse().     BDNS Journal
+Step 4 — Create parsing.html
+<html>
+
+<body>
+
+<script type="text/javascript">
+
+    var data = '{"name":"Romal","age":20,"dept":"IT"}';
+
+    var jsonObj = JSON.parse(data, function(name, value) {
+
+        return value;
+
+    });
+
+    document.writeln(jsonObj.name);
+
+    for (key in jsonObj) {
+
+        document.writeln(
+            "<br/>" + key + " : " + jsonObj[key]
+        );
+
+    }
+
+</script>
+
+</body>
+
+</html>
+
+This follows the first JSON parsing example in the journal. 
+Step 5 — Open parsing.html
+Double-click:
+parsing.html
+
+Expected output
+Romal
+
+name : Romal
+age : 20
+dept : IT
+
+The program first displays:
+jsonObj.name
+
+and then loops through the object using:
+for (key in jsonObj)
+
+The journal shows this parsing/output approach.     BDNS Journal
+Part 3 — JSON.parse() with a Reviver Function
+The journal also demonstrates a JSON.parse() callback that removes a particular property when the key is "sem".     BDNS Journal
+Step 6 — Create parsing2.html
+<html>
+
+<body>
+
+<script type="text/javascript">
+
+    var data = '{"name":"Swadesh","rollno":239715,"class":"TYIT","sem":5}';
+
+    var jsonObj = JSON.parse(data, function(name, value) {
+
+        if (name == "sem") {
+            return undefined;
+        }
+        else {
+            return value;
+        }
+
+    });
+
+    for (key in jsonObj) {
+
+        document.writeln(
+            "<br/>" + key + " : " + jsonObj[key]
+        );
+
+    }
+
+</script>
+
+</body>
+
+</html>
+
+Output
+name : Swadesh
+rollno : 239715
+class : TYIT
+
+The sem field is not displayed because the reviver returns undefined when:
+name == "sem"
+
+The journal's output similarly shows the remaining fields without sem.     
