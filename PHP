@@ -1,0 +1,288 @@
+Practical 5 — PHP and MongoDB
+According to your BDNS Journal, Practical 5 uses PHP + MongoDB + XAMPP. The journal's workflow is:
+XAMPP → Apache → htdocs → PHP files → browser → MongoDB
+It contains four programs:
+1. insert.php
+2. update.php
+3. retrieve.php
+4. delete.php
+The journal specifically instructs saving the PHP files under C:\xampp\htdocs\ and starting Apache from XAMPP.     BDNS Journal
+Important: The journal uses the old php_mongo.dll/legacy MongoDB PHP extension approach. I will show you the journal's exact procedure, rather than silently replacing it with a different setup.
+
+Step 1 — Open XAMPP
+Open XAMPP Control Panel.
+You should see:
+Apache
+MySQL
+
+For this practical, the journal tells you to start Apache.
+Click:
+Apache → Start
+
+When successful, Apache becomes active.
+The journal also mentions using the Admin option and then opening the browser.     BDNS Journal
+Step 2 — Check PHP MongoDB extension
+The journal instructs you to copy:
+php_mongo.dll
+
+into:
+xampp → php → ext
+
+Then edit the PHP configuration and enable the MongoDB extension.     BDNS Journal
+The journal's configuration screenshot shows:
+extension=php_mongo.dll
+
+⚠️ Important
+This is an old PHP/MongoDB extension method. If your XAMPP has a modern PHP version, php_mongo.dll may not exist or may not work.
+Don't download a random DLL from the internet.
+If you get to this step and php_mongo.dll is missing, tell me your XAMPP/PHP version and I'll tell you the correct setup for your machine.
+Step 3 — Create the practical folder
+Go to:
+C:\xampp\htdocs\
+
+Create a folder:
+Practical5
+
+So the location becomes:
+C:\xampp\htdocs\Practical5\
+
+The journal specifically says to save the files under C:\xampp\htdocs\.     BDNS Journal
+Step 4 — Make sure MongoDB is running
+Because PHP is going to connect to MongoDB, start MongoDB as you did in the previous practical.
+CMD 1
+mongod
+
+Keep it running.
+CMD 2
+mongo
+
+Then:
+use MYDB239720
+
+The journal uses the database:
+MYDB239720
+
+and collection:
+MyCol
+
+Step 5 — Create insert.php
+Inside:
+C:\xampp\htdocs\Practical5\
+
+create:
+insert.php
+
+Use the journal's code:
+<?php
+
+$m = new MongoClient();
+
+echo "Connection to database successfully";
+
+$db = $m->MYDB239720;
+
+echo "\nDatabase selected successfully";
+
+$col = $db->MyCol;
+
+echo "\nCollection selected successfully";
+
+$doc = array(
+    "name" => "Romal",
+    "age" => 20,
+    "dept" => "TYIT",
+    "rollno" => 239720
+);
+
+$col->insert($doc);
+
+echo "\nDocument inserted successfully";
+
+?>
+
+The journal's insert.php uses the same database, collection and document fields.     BDNS Journal
+Step 6 — Run insert.php
+Make sure:
+MongoDB → running
+Apache → running
+
+Open Chrome.
+Go to:
+http://localhost/Practical5/insert.php
+
+Expected output
+Connection to database successfully
+Database selected successfully
+Collection selected successfully
+Document inserted successfully
+
+Step 7 — Verify in MongoDB
+Go to your MongoDB CMD:
+use MYDB239720
+
+Then:
+show collections
+
+Expected:
+MyCol
+
+Now:
+db.MyCol.find().pretty()
+
+Expected output
+{
+    "_id" : ObjectId("..."),
+    "name" : "Romal",
+    "age" : 20,
+    "dept" : "TYIT",
+    "rollno" : 239720
+}
+
+The journal shows this same document in its MongoDB output.     BDNS Journal
+Step 8 — Create update.php
+Create:
+C:\xampp\htdocs\Practical5\update.php
+
+Use:
+<?php
+
+$m = new MongoClient();
+
+echo "Connection to database successfully";
+
+$db = $m->MYDB239720;
+
+echo "\nDatabase selected successfully";
+
+$col = $db->MyCol;
+
+echo "\nCollection selected successfully";
+
+$col->update(
+    array("name" => "Romal"),
+    array('$set' => array("age" => 19))
+);
+
+echo "\nDocument updated successfully";
+
+?>
+
+This is the update program shown in the journal.     BDNS Journal
+Step 9 — Run update.php
+Open:
+http://localhost/Practical5/update.php
+
+Expected output
+Connection to database successfully
+Database selected successfully
+Collection selected successfully
+Document updated successfully
+
+Now verify:
+db.MyCol.find().pretty()
+
+Expected result
+The age changes:
+"name" : "Romal"
+"age" : 19
+"dept" : "TYIT"
+"rollno" : 239720
+
+The journal's screenshot shows age : 19 after the update.     BDNS Journal
+Step 10 — Create retrieve.php
+Create:
+C:\xampp\htdocs\Practical5\retrieve.php
+
+Use:
+<?php
+
+$m = new MongoClient();
+
+echo "Connection to database successfully";
+
+$db = $m->MYDB239720;
+
+echo "\nDatabase selected successfully";
+
+$col = $db->MyCol;
+
+echo "\nCollection selected successfully";
+
+$cursor = $col->find();
+
+foreach($cursor as $doc)
+{
+    echo "<br/>";
+    echo $doc["name"]."<br/>";
+    echo $doc["age"]."<br/>";
+    echo $doc["dept"]."<br/>";
+    echo $doc["rollno"]."<br/>";
+}
+
+?>
+
+This follows the journal's retrieve.php.     BDNS Journal
+Step 11 — Run retrieve.php
+Open:
+http://localhost/Practical5/retrieve.php
+
+Expected browser output
+Connection to database successfully
+Database selected successfully
+Collection selected successfully
+
+Romal
+19
+TYIT
+239720
+
+The journal's screenshot shows the retrieved values being displayed in the browser.     BDNS Journal
+Step 12 — Create delete.php
+Create:
+C:\xampp\htdocs\Practical5\delete.php
+
+Use:
+<?php
+
+$m = new MongoClient();
+
+echo "Connection to database successfully";
+
+$db = $m->MYDB239720;
+
+echo "\nDatabase selected successfully";
+
+$col = $db->MyCol;
+
+echo "\nCollection selected successfully";
+
+$col->remove(
+    array("name" => "Romal")
+);
+
+echo "\nDocument deleted successfully";
+
+?>
+
+This is the delete program shown in the journal.     BDNS Journal
+Step 13 — Run delete.php
+Open:
+http://localhost/Practical5/delete.php
+
+Expected output
+Connection to database successfully
+Database selected successfully
+Collection selected successfully
+Document deleted successfully
+
+The journal shows this output in the browser.     BDNS Journal
+Step 14 — Verify deletion
+Go to MongoDB CMD:
+use MYDB239720
+
+Then:
+db.MyCol.find().pretty()
+
+Expected result
+The Romal document should no longer appear.
+The journal also shows db.MyCol.find().pretty() after the delete operation.     BDNS Journal
