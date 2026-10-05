@@ -1,0 +1,221 @@
+Aggregate Functions
+Practical 3 is MongoDB Aggregate Functions. The journal first inserts records and displays them, then performs count, sum, average, minimum, maximum, first, last, push, and addToSet operations.     BDNS Journal
+We'll use your same 2-CMD college setup.
+Step 1 — Start MongoDB
+CMD 1
+mongod
+
+Keep it running.
+CMD 2
+mongo
+
+You should get:
+>
+
+Step 2 — Create/select database
+use Aggregate
+
+Output:
+switched to db Aggregate
+
+Step 3 — Insert the collection
+The journal's example uses employee records with Name, Age, City and Salary. Its displayed aggregation results show:
+- Thane → 1 employee, salary 60000
+- Mumbai → 3 employees, salaries 12000, 3000, 83000
+- Pune → 1 employee, salary 55000     BDNS Journal
+Use:
+db.col.insertMany([
+  {Name:"Romal",Age:17,City:"Mumbai",Salary:12000},
+  {Name:"Rohan",Age:22,City:"Thane",Salary:60000},
+  {Name:"Sujal",Age:25,City:"Mumbai",Salary:3000},
+  {Name:"Hansa",Age:34,City:"Mumbai",Salary:83000},
+  {Name:"Manav",Age:47,City:"Pune",Salary:55000}
+])
+
+Output
+{
+  "acknowledged" : true,
+  "insertedIds" : {
+    "0" : ObjectId("..."),
+    "1" : ObjectId("..."),
+    "2" : ObjectId("..."),
+    "3" : ObjectId("..."),
+    "4" : ObjectId("...")
+  }
+}
+
+Your ObjectIds will be different.
+Step 4 — Display all records
+db.col.find()
+
+You should see the five records:
+Romal   17   Mumbai   12000
+Rohan   22   Thane    60000
+Sujal   25   Mumbai   3000
+Hansa   34   Mumbai   83000
+Manav   47   Pune     55000
+
+1. Group By Function — Count
+Question: Group the records by city and get the count.
+Run:
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$sum:1}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : 1 }
+{ "_id" : "Mumbai", "cityCount" : 3 }
+{ "_id" : "Pune",   "cityCount" : 1 }
+
+This is the Group + Count operation shown in the journal.     BDNS Journal
+2. Sum Function
+Question: Find the total salary for each city.
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$sum:"$Salary"}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : 60000 }
+{ "_id" : "Mumbai", "cityCount" : 98000 }
+{ "_id" : "Pune",   "cityCount" : 55000 }
+
+Check
+Mumbai:
+12000 + 3000 + 83000 = 98000
+
+The journal displays these same totals.     BDNS Journal
+3. Average Function
+Question: Find the average salary for each city.
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$avg:"$Salary"}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : 60000 }
+{ "_id" : "Mumbai", "cityCount" : 32666.666666666668 }
+{ "_id" : "Pune",   "cityCount" : 55000 }
+
+For Mumbai:
+98000 / 3 = 32666.666666666668
+
+This matches the journal's displayed result.     BDNS Journal
+4. Min Function
+Question: Find the minimum salary in each city.
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$min:"$Salary"}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : 60000 }
+{ "_id" : "Mumbai", "cityCount" : 3000 }
+{ "_id" : "Pune",   "cityCount" : 55000 }
+
+The journal shows the same minimum values.     BDNS Journal
+5. Max Function
+Question: Find the maximum salary in each city.
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$max:"$Salary"}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : 60000 }
+{ "_id" : "Mumbai", "cityCount" : 83000 }
+{ "_id" : "Pune",   "cityCount" : 55000 }
+
+6. First Function
+Question: Get the first salary from each city.
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$first:"$Salary"}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : 60000 }
+{ "_id" : "Mumbai", "cityCount" : 12000 }
+{ "_id" : "Pune",   "cityCount" : 55000 }
+
+The journal shows Mumbai's first salary as 12000.     BDNS Journal
+7. Last Function
+Question: Get the last salary from each city.
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$last:"$Salary"}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : 60000 }
+{ "_id" : "Mumbai", "cityCount" : 83000 }
+{ "_id" : "Pune",   "cityCount" : 55000 }
+
+The journal shows Mumbai's last salary as 83000.     BDNS Journal
+8. Push Function
+Question: Store all salaries of each city in an array.
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$push:"$Salary"}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : [ 60000 ] }
+{ "_id" : "Mumbai", "cityCount" : [ 12000, 3000, 83000 ] }
+{ "_id" : "Pune",   "cityCount" : [ 55000 ] }
+
+$push keeps duplicate values if they exist. The journal demonstrates this array-collection operation.     BDNS Journal
+9. addToSet Function
+Question: Store unique salaries of each city.
+db.col.aggregate([
+  {
+    $group:{
+      _id:"$City",
+      cityCount:{$addToSet:"$Salary"}
+    }
+  }
+])
+
+Output
+{ "_id" : "Thane",  "cityCount" : [ 60000 ] }
+{ "_id" : "Mumbai", "cityCount" : [ 12000, 3000, 83000 ] }
+{ "_id" : "Pune",   "cityCount" : [ 55000 ] }
+
+The difference is:
+$push      → adds values to an array
+$addToSet  → adds only unique values
+
+The journal includes both operations.     BDNS Journal
