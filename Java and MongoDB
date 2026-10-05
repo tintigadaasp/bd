@@ -1,0 +1,298 @@
+Practical 4 — Java and MongoDB
+According to your journal, Practical 4 is Java + MongoDB and contains four programs:
+1. Insert document
+2. Update document
+3. Retrieve document
+4. Delete document
+The journal's screenshots show these programs being executed through CMD, which matches the method you described.     BDNS Journal
+Step 1 — Start MongoDB
+CMD 1
+Open Command Prompt and run:
+mongod
+
+Keep this CMD open.
+CMD 2
+Open another Command Prompt and run:
+mongo
+
+You should get:
+>
+
+Keep this CMD open too.
+Step 2 — Create a folder for Practical 4
+Open another CMD and type:
+mkdir "C:\MongoDB Practical 4"
+
+Then:
+cd "C:\MongoDB Practical 4"
+
+Your CMD should show something like:
+C:\MongoDB Practical 4>
+
+The journal's screenshots similarly show Java files such as insert.java, retrieve.java, etc. being executed from CMD.     BDNS Journal
+Step 3 — Create insert.java
+Create a file called:
+insert.java
+
+Put the journal's insert program in it:
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+
+public class insert
+{
+    public static void main(String[] args)
+    {
+        MongoClient mongo = new MongoClient("localhost",27017);
+
+        System.out.println("Connected to the database successfully.");
+
+        MongoDatabase database = mongo.getDatabase("TYITDB239720");
+
+        MongoCollection<Document> collection =
+            database.getCollection("myCol");
+
+        System.out.println("Collection myCol selected successfully");
+
+        Document document = new Document();
+
+        document.append("id",1);
+        document.append("Name","Romal");
+        document.append("RollNo",239720);
+        document.append("Age",20);
+        document.append("College","MCC");
+
+        collection.insertOne(document);
+
+        System.out.println("Document inserted successfully");
+    }
+}
+
+This is the same program structure shown in the journal.     BDNS Journal
+Step 4 — Compile insert.java
+In CMD:
+javac insert.java
+
+If there are no errors, a file called:
+insert.class
+
+will be created.
+Step 5 — Run the program
+java insert
+
+Expected output
+Connected to the database successfully.
+Collection myCol selected successfully
+Document inserted successfully
+
+The journal's output then verifies the inserted document in MongoDB.     BDNS Journal
+Step 6 — Verify the inserted document
+Go to your MongoDB shell CMD:
+show dbs
+
+Then:
+use TYITDB239720
+
+Output:
+switched to db TYITDB239720
+
+Show collections:
+show collections
+
+Output:
+myCol
+
+Now:
+db.myCol.find().pretty()
+
+Expected output
+{
+    "_id" : ObjectId("..."),
+    "id" : 1,
+    "Name" : "Romal",
+    "RollNo" : 239720,
+    "Age" : 20,
+    "College" : "MCC"
+}
+
+The journal shows this verification on the following output page.     BDNS Journal
+Step 7 — Create update.java
+Create:
+update.java
+
+Use the journal's update program:
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.WriteResult;
+
+public class update
+{
+    public static void main(String[] args)
+    {
+        MongoClient mongo = new MongoClient("localhost",27017);
+
+        System.out.println("Connected to the database successfully.");
+
+        DB db = mongo.getDB("TYITDB239720");
+
+        DBCollection col = db.getCollection("myCol");
+
+        BasicDBObject query =
+            new BasicDBObject("id",1);
+
+        BasicDBObject update =
+            new BasicDBObject();
+
+        update.put("$set",
+            new BasicDBObject("Age",27));
+
+        WriteResult result =
+            col.update(query,update);
+
+        mongo.close();
+    }
+}
+
+This is the code presented in the journal.     BDNS Journal
+Compile
+javac update.java
+
+Run
+java update
+
+The journal then verifies the updated document:
+db.myCol.find().pretty()
+
+Expected document
+{
+    "id" : 1,
+    "Name" : "Romal",
+    "RollNo" : 239720,
+    "Age" : 27,
+    "College" : "MCC"
+}
+
+The important change is:
+Age: 20
+   ↓
+Age: 27
+
+The journal shows this updated value.     BDNS Journal
+Step 8 — Create retrieve.java
+Create:
+retrieve.java
+
+Use:
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+
+import java.util.Iterator;
+import com.mongodb.client.FindIterable;
+
+public class retrieve
+{
+    public static void main(String[] args)
+    {
+        MongoClient mongo =
+            new MongoClient("localhost",27017);
+
+        System.out.println(
+            "Connected to the database successfully.");
+
+        MongoDatabase database =
+            mongo.getDatabase("TYITDB239720");
+
+        MongoCollection<Document> collection =
+            database.getCollection("myCol");
+
+        System.out.println(
+            "Collection myCol selected successfully");
+
+        FindIterable<Document> iterDoc =
+            collection.find();
+
+        Iterator it = iterDoc.iterator();
+
+        while(it.hasNext())
+        {
+            System.out.println(it.next());
+        }
+    }
+}
+
+This follows the journal's retrieve program.     BDNS Journal
+Compile
+javac retrieve.java
+
+Run
+java retrieve
+
+Expected output
+Connected to the database successfully.
+Collection myCol selected successfully
+
+Document{{_id=..., id=1, Name=Romal,
+RollNo=239720, Age=27, College=MCC}}
+
+The journal's screenshot shows the retrieved document printed in CMD.     BDNS Journal
+Step 9 — Create delete.java
+Create:
+delete.java
+
+Use:
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+import com.mongodb.client.model.Filters;
+
+public class delete
+{
+    public static void main(String[] args)
+    {
+        MongoClient mongo =
+            new MongoClient("localhost",27017);
+
+        System.out.println(
+            "Connected to the database successfully.");
+
+        MongoDatabase database =
+            mongo.getDatabase("TYITDB239720");
+
+        MongoCollection<Document> collection =
+            database.getCollection("myCol");
+
+        System.out.println(
+            "Collection myCol selected successfully");
+
+        collection.deleteOne(Filters.eq("id",1));
+
+        System.out.println(
+            "Document deleted successfully");
+    }
+}
+
+This follows the journal's delete program.     BDNS Journal
+Compile
+javac delete.java
+
+Run
+java delete
+
+Expected output
+Connected to the database successfully.
+Collection myCol selected successfully
+Document deleted successfully
+
+Step 10 — Verify deletion
+Go back to MongoDB shell:
+db.myCol.find().pretty()
+
+Expected result
+No document should be displayed.
+The journal also shows db.myCol.find().pretty() after the deletion.
