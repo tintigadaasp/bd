@@ -1,0 +1,241 @@
+Step 1 — Create Practical 8 folder
+Create:
+BDNS
+└── Practical8
+
+Keep these files inside:
+Practical8
+│
+├── jquery-3.3.1.min.js
+├── q1.html
+├── q2.html
+└── q3.html
+
+The journal uses jquery-3.3.1.min.js for Practical 8.     BDNS Journal
+Q1 — Create Animation Effect
+The journal uses .animate() to move an image horizontally.     BDNS Journal
+Step 1 — Create q1.html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.3.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("button").click(function () {
+
+                $("img").animate({
+                    left: 50
+                });
+
+            });
+
+        });
+
+    </script>
+
+    <style>
+
+        img {
+            position: relative;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <p>Romal:239720</p>
+
+    <img src="Mountain.png" alt="Mountain Image">
+    <br>
+
+    <button>Start Animation</button>
+
+</body>
+
+</html>
+
+Important
+You also need the image:
+Mountain.png
+
+Keep it in the same folder:
+Practical8
+│
+├── q1.html
+├── Mountain.png
+└── jquery-3.3.1.min.js
+
+The journal's program specifically uses Mountain.png.     BDNS Journal
+Step 2 — Open q1.html
+Open the file in Chrome.
+Before clicking
+You should see:
+Romal:239720
+
+[Mountain Image]
+
+[Start Animation]
+
+Step 3 — Click Start Animation
+The image moves horizontally.
+Output
+The journal shows the mountain image changing its horizontal position after clicking Start Animation.     BDNS Journal
+Q2 — Animate Multiple CSS Properties
+The journal's second program animates multiple CSS properties:
+width
+height
+opacity
+left
+
+    BDNS Journal
+Step 1 — Create q2.html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.6.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#b1").click(function () {
+
+                $("#div1").animate({
+                    width: "150px",
+                    height: "150px",
+                    opacity: "0.5",
+                    left: "150"
+                });
+
+            });
+
+        });
+
+    </script>
+
+    <style>
+
+        #div1 {
+            width: 100px;
+            height: 100px;
+            background: yellow;
+            position: relative;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <p>Animation</p>
+
+    <div id="div1"></div>
+
+    <button id="b1">Click to Animate</button>
+
+</body>
+
+</html>
+
+Step 2 — Open q2.html
+Initially you should see:
+Animation
+
+[small square]
+
+[Click to Animate]
+
+The square initially has:
+Width  = 100px
+Height = 100px
+
+Step 3 — Click Click to Animate
+The square will:
+- Increase width
+- Increase height
+- Become partially transparent
+- Move to the right
+Output
+The journal shows the square becoming larger and moving after the button is clicked.     BDNS Journal
+Q3 — Method Chaining
+The journal's third question demonstrates jQuery method chaining.     BDNS Journal
+The important line is:
+$("#p1").css("color","blue").slideUp(2000).slideDown(2000)
+
+This performs multiple jQuery methods on the same element.
+Step 1 — Create q3.html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Basic jQuery</title>
+
+    <script src="jquery-3.3.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("button").click(function () {
+
+                $("#p1")
+                    .css("color", "blue")
+                    .slideUp(2000)
+                    .slideDown(2000);
+
+            });
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+    <p id="p1">Romal:239720</p>
+
+    <button>Click Me</button>
+
+</body>
+
+</html>
+
+This follows the journal's method-chaining example.     BDNS Journal
+Step 2 — Open q3.html
+Initially:
+Romal:239720
+
+[Click Me]
+
+Click Click Me.
+What happens
+First:
+Romal:239720
+
+changes to blue.
+Then:
+slideUp(2000)
+
+The paragraph slides up and disappears.
+Then:
+slideDown(2000)
+
+The paragraph slides back down.
+Output
+The journal shows the paragraph in blue after the button is clicked.     BDNS Journal
